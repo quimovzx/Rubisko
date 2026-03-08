@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Private Access</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Share Tech Mono', monospace;
+background:black;
+color:#00ff9c;
+text-align:center;
+overflow:hidden;
+}
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
+}
+
+#shooting{
+z-index:-1;
+}
+
+.box{
+margin-top:120px;
+background:rgba(0,0,0,0.85);
+border:2px solid #00ff9c;
+box-shadow:0 0 30px #00ff9c;
+width:360px;
+padding:30px;
+border-radius:12px;
+margin-left:auto;
+margin-right:auto;
+}
+
+input{
+width:85%;
+padding:10px;
+margin:10px;
+background:black;
+border:1px solid #00ff9c;
+color:#00ff9c;
+font-family:'Share Tech Mono';
+}
+
+button{
+padding:10px 20px;
+background:#00ff9c;
+border:none;
+cursor:pointer;
+font-weight:bold;
+}
+
+#timer{
+font-family:'Orbitron', sans-serif;
+font-size:48px;
+margin-top:25px;
+text-shadow:0 0 15px #00ff9c;
+}
+
+#result{
+margin-top:40px;
+color:white;
+font-family:'Orbitron';
+}
+
+.heart{
+position:absolute;
+color:#ff3b6b;
+font-size:20px;
+animation:float 6s linear infinite;
+}
+
+@keyframes float{
+0%{transform:translateY(100vh);}
+100%{transform:translateY(-10vh);}
+}
+
+#terminal{
+position:absolute;
+top:20px;
+left:20px;
+color:#00ff9c;
+font-size:14px;
+text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<div id="terminal"></div>
+
+<canvas id="galaxy"></canvas>
+<canvas id="shooting"></canvas>
+
+<!-- LAYER 1 -->
+<div id="layer1" class="box">
+<h2>🔒 LAYER 1</h2>
+<input id="yourname" placeholder="YOUR NAME">
+<input id="myname" placeholder="MY NAME">
+<button onclick="check1()">UNLOCK</button>
+</div>
+
+<!-- LAYER 2 -->
+<div id="layer2" class="box" style="display:none">
+<h2>🔒 TIME LOCK</h2>
+<div id="clock"></div>
+<input id="yourdob" placeholder="YOUR DOB">
+<input id="mydob" placeholder="MY DOB">
+<button onclick="check2()">UNLOCK</button>
+</div>
+
+<!-- LAYER 3 -->
+<div id="layer3" class="box" style="display:none">
+<h2>🔒 FINAL KEY</h2>
+<input id="finalname" placeholder="MY NAME">
+<button onclick="check3()">UNLOCK</button>
+</div>
+
+<!-- WRONG PAGE -->
+<div id="errorpage" class="box" style="display:none">
+<h1> I LOVE U MY HALFY</h1>
+</div>
+
+<!-- MAIN -->
+<div id="main" class="box" style="display:none">
+
+<h2>TIME LOCKED UNTIL RESULT</h2>
+
+<div id="timer"></div>
+
+<div id="offer">
+<h3>Special Offer</h3>
+
+<input id="code" placeholder="ENTER CODE">
+<button onclick="unlockOffer()">UNLOCK</button>
+
+<p style="font-size:12px">
+CODE janne ke liye first page par ek baar galat info daalo.
+Jo message aaye wahi code use karo.
+</p>
+</div>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+/* TERMINAL EFFECT */
+
+let terminalLines=[
+"Connecting secure node...",
+"Decrypting cosmic protocol...",
+"Accessing hidden memories...",
+"Authentication required..."
+]
+
+let t=0
+function terminal(){
+if(t<terminalLines.length){
+document.getElementById("terminal").innerHTML+=terminalLines[t]+"<br>"
+t++
+setTimeout(terminal,800)
+}
+}
+terminal()
+
+/* LOCKS */
+
+function check1(){
+let a=yourname.value
+let b=myname.value
+if(a=="Sonam" && b=="Kuber"){
+layer1.style.display="none"
+layer2.style.display="block"
+}else{wrongAccess()}
+}
+
+function check2(){
+let a=yourdob.value
+let b=mydob.value
+if(a=="05042009" && b=="31122009"){
+layer2.style.display="none"
+layer3.style.display="block"
+}else{wrongAccess()}
+}
+
+function check3(){
+let a=finalname.value
+if(a=="RUBISKO"){
+layer3.style.display="none"
+main.style.display="block"
+}else{wrongAccess()}
+}
+
+function wrongAccess(){
+layer1.style.display="none"
+layer2.style.display="none"
+layer3.style.display="none"
+errorpage.style.display="block"
+}
+
+/* CLOCK */
+
+setInterval(()=>{
+let d=new Date()
+clock.innerHTML="⏳ "+d.toLocaleTimeString()
+},1000)
+
+/* COUNTDOWN */
+
+const target=new Date("June 30, 2027 08:30:00").getTime()
+
+setInterval(()=>{
+
+let now=new Date().getTime()
+let dist=target-now
+
+let d=Math.floor(dist/(1000*60*60*24))
+let h=Math.floor((dist%(1000*60*60*24))/(1000*60*60))
+let m=Math.floor((dist%(1000*60*60))/(1000*60))
+let s=Math.floor((dist%(1000*60))/1000)
+
+timer.innerHTML=d+"d "+h+"h "+m+"m "+s+"s"
+
+if(dist<=0){
+showResult()
+}
+
+},1000)
+
+/* OFFER */
+
+function unlockOffer(){
+if(code.value=="I LOVE U MY HALFY"){
+showResult()
+}else{
+alert("Wrong Code")
+}
+}
+
+/* RESULT */
+
+function showResult(){
+
+result.innerHTML=
+
+"<h2>I LOVE U SONAM BAGHEL WILL U BE MY HALFY NOW</h2>"+
+
+"<p><b>NOW ON THAT DAY 30 JUNE 2027 U HAVE CLEARED NEET AND I HAVE CRACKED JEE ADVANCED. SO MY WORLD I THINK ITS THE ENDING OF THE TIME CONDITIONS U HAVE GIVEN [ JUST 1 SAAL ]. SO NOW I ASKED FOR THE WORD FROM WHICH U FEARS DO U LOVE ME !</b></p>"
+
+spawnHearts()
+
+}
+
+/* HEARTS */
+
+function spawnHearts(){
+setInterval(()=>{
+let heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML="❤"
+heart.style.left=Math.random()*100+"vw"
+document.body.appendChild(heart)
+setTimeout(()=>heart.remove(),6000)
+},500)
+}
+
+/* GALAXY */
+
+let canvas=document.getElementById("galaxy")
+let ctx=canvas.getContext("2d")
+
+canvas.width=window.innerWidth
+canvas.height=window.innerHeight
+
+let stars=[]
+
+for(let i=0;i<400;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2
+})
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="white"
+
+for(let s of stars){
+ctx.beginPath()
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2)
+ctx.fill()
+}
+}
+
+setInterval(draw,40)
+
+/* SHOOTING STARS */
+
+let shoot=document.getElementById("shooting")
+let sctx=shoot.getContext("2d")
+
+shoot.width=window.innerWidth
+shoot.height=window.innerHeight
+
+function shootingStar(){
+
+let x=Math.random()*shoot.width
+let y=0
+
+let len=300
+
+let interval=setInterval(()=>{
+
+sctx.clearRect(0,0,shoot.width,shoot.height)
+
+sctx.strokeStyle="white"
+sctx.beginPath()
+sctx.moveTo(x,y)
+sctx.lineTo(x-len,y+len)
+sctx.stroke()
+
+x-=15
+y+=15
+
+if(y>shoot.height){
+clearInterval(interval)
+}
+
+},30)
+
+}
+
+setInterval(shootingStar,4000)
+
+</script>
+
+</body>
+</html>
